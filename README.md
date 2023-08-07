@@ -30,11 +30,9 @@ def enroll_user():
     print("\n" + ANSI_COLORS['YELLOW'] + "=========== Enrollment Phase ============" + ANSI_COLORS['RESET'])
     password = []
     image_paths = []
-
     root = tk.Tk()
     root.title("Image-Based Password Manager - Enrollment")
     root.geometry("800x400")
-
     def add_image():
         file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg;*.jpeg")])
         if file_path:
@@ -45,29 +43,23 @@ def enroll_user():
             label = tk.Label(root, image=photo)
             label.image = photo
             label.pack()
-
     tk.Label(root, text="Select images for your password (minimum 2):").pack()
     tk.Button(root, text="Add Image", command=add_image).pack()
     tk.Button(root, text="Finish Enrollment", command=root.quit).pack()
-
     root.mainloop()
     root.destroy()
-
     if len(image_paths) < 2:
         print(ANSI_COLORS['RED'] + "Error: You must select at least 2 images." + ANSI_COLORS['RESET'])
         return enroll_user()
-
     return image_paths
 
 def authenticate_user(enrolled_password):
     print("\n" + ANSI_COLORS['GREEN'] + "================= Authentication Phase ================" + ANSI_COLORS['RESET'])
     entered_password = []
     image_paths = []
-
     root = tk.Tk()
     root.title("Image-Based Password Manager - Authentication")
     root.geometry("800x400")
-
     def add_image():
         file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg;*.jpeg")])
         if file_path:
@@ -78,18 +70,13 @@ def authenticate_user(enrolled_password):
             label = tk.Label(root, image=photo)
             label.image = photo
             label.pack()
-
     tk.Label(root, text="Select images for authentication (minimum 2):").pack()
     tk.Button(root, text="Add Image", command=add_image).pack()
     tk.Button(root, text="Finish Authentication", command=root.quit).pack()
-
     root.mainloop()
-
-
     if len(image_paths) < 2:
         print(ANSI_COLORS['RED'] + "Error: You must select at least 2 images." + ANSI_COLORS['RESET'])
         return authenticate_user(enrolled_password)
-
     return image_paths == enrolled_password
 
 
@@ -99,7 +86,6 @@ def create_user():
     if username in passwords:
         print(ANSI_COLORS['RED'] + "Username already exists. Please choose a different username." + ANSI_COLORS['RESET'])
         return
-
     password = enroll_user()
     hashed_password = hashlib.sha256(''.join(password).encode()).hexdigest()
     passwords[username] = hashed_password
@@ -113,14 +99,11 @@ def login():
     if username not in passwords:
         print(ANSI_COLORS['RED'] + "Invalid username." + ANSI_COLORS['RESET'])
         return False
-
     password = enroll_user()
     entered_password = hashlib.sha256(''.join(password).encode()).hexdigest()
-
     if passwords[username] == entered_password:
         print(ANSI_COLORS['YELLOW'] + "Authentication successful. Welcome, {}!".format(username) + ANSI_COLORS['RESET'])
         return True
-
     print(ANSI_COLORS['RED'] + "Authentication failed. Please try again." + ANSI_COLORS['RESET'])
     return False
 
@@ -142,13 +125,11 @@ print("This program allows you to create and manage image-based passwords for us
 print( "!!!!!!!!!!!!!!!!!Please note that this program is for educational purposes only!!!!!!!!!!!!!!" + ANSI_COLORS['RESET'])
 
 while True:
-
     print("\n" + ANSI_COLORS['BLUE'] + "============= MENU ============" + ANSI_COLORS['RESET'])
     print("\n" + ANSI_COLORS['GREEN'] + "1. Create User" + ANSI_COLORS['RESET'])
     print("\n" + ANSI_COLORS['GREEN'] + "2. Login" + ANSI_COLORS['RESET'])
     print("\n" + ANSI_COLORS['GREEN'] + "3. Exit" + ANSI_COLORS['RESET'])
     choice = input("\n" + ANSI_COLORS['YELLOW'] + "Enter your choice (1-4): " + ANSI_COLORS['RESET'])
-
     if choice == '1':
         create_user()
     elif choice == '2':
